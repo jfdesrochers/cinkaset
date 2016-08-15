@@ -1,0 +1,9 @@
+{
+  "name": "Cinkaset",
+  "main": "index.html",
+  "window": {
+    "title": "Cinkaset par J-F Desrochers",
+    "width": 1024,
+    "height": 768
+  }
+}

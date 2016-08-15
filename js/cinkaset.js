@@ -21,17 +21,21 @@ function loadingDone(title, message, reload) {
     }, 2000);
 }
 
-var Dashdata = function () {
+var Reportdata = function () {
     // Private
     var self = {};
 
     // Public
     self.error = m.prop("");
+    self.report = {};
+    self.loadReport = function(files) {
+
+    };
 
     return self;
 };
 
-var Dashapp = {
+var Reportapp = {
     controller: function(data) {
         // Private
         var self = {};
@@ -43,9 +47,18 @@ var Dashapp = {
     },
 
     view: function(ctrl) {
-        var notLoaded = ctrl.frontpage();
-        return m("div.container-fluid", [
-
+        return m("div.container", [
+            m("div.row.pt3",
+                m("div.panel.panel-default", [
+                    m("div.panel-heading.app-title", "Cinkaset"),
+                    m("div.panel-body.text-center", [
+                        m("span", {className: "btn btn-primary btn-lg btn-file"}, [
+                            m("span#browsecaption", "Charger un daily.report..."),
+                            m("input", {type: "file", onchange: m.withAttr("files", ctrl.data.loadReport)})
+                        ])
+                    ])
+                ])
+            )
         ]);
     }
 };
