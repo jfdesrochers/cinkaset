@@ -78,7 +78,7 @@ var DataRenderer = function() {
             return curTop;
         });
 
-        
+
     };
 
     return self;
@@ -328,7 +328,7 @@ var Reportapp = {
         return m("div.container", [
             m("div.row.pt3",
                 m("div.panel.panel-default", [
-                    m("div.panel-heading.app-title", "Cinkaset"),
+                    m("div.panel-heading.app-title", "Cinkaset par J-F Desrochers"),
                     m("div.panel-body.text-center", [
                         ctrl.data.error().length ? m("div.alert.alert-danger", ctrl.data.error()) : "",
                         m("span", {className: "btn btn-primary btn-lg btn-file"}, [
