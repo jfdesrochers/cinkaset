@@ -108,3 +108,44 @@ body {
     font-family: Lobster, cursive;
     font-size: 4rem;
 }
+
+ul.checklist {
+    list-style-type: none;
+}
+
+.checklist li {
+    font-weight: 300;
+    line-height: 1.4;
+    margin-bottom: 7px;
+    font-size: 19px;
+}
+
+.checklist li.text-success:before {
+    font-family: 'FontAwesome', sans-serif;
+    content: '\f046';
+    margin:0 5px 0 -15px;
+}
+
+.checklist li.text-danger:before {
+    font-family: 'FontAwesome', sans-serif;
+    content: '\f096';
+    margin:0 5px 0 -15px;
+}
+
+.panel-heading {
+    font-weight: bold;
+}
+
+.list-group-item.hoursitem {
+    font-size: 16px;
+    padding: 5px;
+}
+
+.hoursitem .form-control {
+    width: auto;
+    height: auto;
+}
+
+.hoursitem .hlabel {
+    margin-right: 10px;
+}

@@ -14,155 +14,29 @@
     <body>
         {{#each page}}
         <div class="reportpage">
-            <div class="reporttitle">Jean-François Desrochers</div>
-            <div class="reportsubtitle">1256614</div>
-            <div class="card shadow w1 h1 bg-success">
+            <div class="reporttitle">{{assocname}}</div>
+            <div class="reportsubtitle">{{assocno}}</div>
+            {{#each block}}
+            <div class="card shadow w{{posw}} h{{posh}} bg-{{bgstatus}}">
                 <div class="card-inside">
-                    <div class="mvp"><i class="fa fa-trophy"></i>&nbsp; Champion de cette catégorie !</div>
+                    <div class="{{mvpstatus}}"><i class="fa fa-trophy"></i>&nbsp; Champion de cette catégorie !</div>
                     <div class="chart-bg">
-                        <div class="bg-progress" style="width: 0%"></div>
+                        <div class="bg-progress" style="width: {{progress}}%"></div>
                     </div>
                     <div class="card-chart">
-                        <div class="card-score">5.89</div>
-                        <div class="card-unit">unités</div>
-                        <div class="card-score-subtext">Meilleur score: 5.89</div>
+                        <div class="card-score">{{result}}</div>
+                        <div class="card-unit">{{unit}}</div>
+                        <div class="card-score-subtext">{{objective}}</div>
                     </div>
-                    <div class="card-title">Class Attach</div>
-                    <div class="card-subtitle">Ordinateurs Mac</div>
-                    <div class="card-text">Rang : 1er semaine / 3e année</div>
+                    <div class="card-title">{{title}}</div>
+                    <div class="card-subtitle">{{subtitle}}</div>
+                    <div class="card-text">{{text}}</div>
                 </div>
             </div>
-            <div class="card shadow w2 h1 bg-warning">
-                <div class="card-inside">
-                    <div class="mvp"><i class="fa fa-trophy"></i>&nbsp; Champion de cette catégorie !</div>
-                    <div class="chart-bg">
-                        <div class="bg-progress" style="width: 0%"></div>
-                    </div>
-                    <div class="card-chart">
-                        <div class="card-score">5.89</div>
-                        <div class="card-unit">unités</div>
-                        <div class="card-score-subtext">Meilleur score: 5.89</div>
-                    </div>
-                    <div class="card-title">Class Attach</div>
-                    <div class="card-subtitle">Ordinateurs</div>
-                    <div class="card-text">Rang : 1er semaine / 3e année</div>
-                </div>
-            </div>
-            <div class="card shadow w3 h1 bg-danger">
-                <div class="card-inside">
-                    <div class="mvp"><i class="fa fa-trophy"></i>&nbsp; Champion de cette catégorie !</div>
-                    <div class="chart-bg">
-                        <div class="bg-progress" style="width: 0%"></div>
-                    </div>
-                    <div class="card-chart">
-                        <div class="card-score">5.89</div>
-                        <div class="card-unit">unités</div>
-                        <div class="card-score-subtext">Meilleur score: 5.89</div>
-                    </div>
-                    <div class="card-title">Class Attach</div>
-                    <div class="card-subtitle">Imprimantes</div>
-                    <div class="card-text">Rang : 1er semaine / 3e année</div>
-                </div>
-            </div>
-            <div class="card shadow w1 h2 bg-success">
-                <div class="card-inside">
-                    <div class="mvp"><i class="fa fa-trophy"></i>&nbsp; Champion de cette catégorie !</div>
-                    <div class="chart-bg">
-                        <div class="bg-progress" style="width: 50%"></div>
-                    </div>
-                    <div class="card-chart">
-                        <div class="card-score">5.89</div>
-                        <div class="card-unit">unités</div>
-                        <div class="card-score-subtext">Meilleur score: 5.89</div>
-                    </div>
-                    <div class="card-title">Class Attach</div>
-                    <div class="card-subtitle">Tablettes</div>
-                    <div class="card-text">Rang : 1er semaine / 3e année</div>
-                </div>
-            </div>
-            <div class="card shadow w2 h2 bg-warning">
-                <div class="card-inside">
-                    <div class="mvp"><i class="fa fa-trophy"></i>&nbsp; Champion de cette catégorie !</div>
-                    <div class="chart-bg">
-                        <div class="bg-progress" style="width: 50%"></div>
-                    </div>
-                    <div class="card-chart">
-                        <div class="card-score">5.89</div>
-                        <div class="card-unit">unités</div>
-                        <div class="card-score-subtext">Meilleur score: 5.89</div>
-                    </div>
-                    <div class="card-title">Class Attach</div>
-                    <div class="card-subtitle">Smartphones</div>
-                    <div class="card-text">Rang : 1er semaine / 3e année</div>
-                </div>
-            </div>
-            <div class="card shadow w3 h2 bg-danger">
-                <div class="card-inside">
-                    <div class="mvp"><i class="fa fa-trophy"></i>&nbsp; Champion de cette catégorie !</div>
-                    <div class="chart-bg">
-                        <div class="bg-progress" style="width: 50%"></div>
-                    </div>
-                    <div class="card-chart">
-                        <div class="card-score">5.89</div>
-                        <div class="card-unit">unités</div>
-                        <div class="card-score-subtext">Meilleur score: 5.89</div>
-                    </div>
-                    <div class="card-title">Plans de protection</div>
-                    <div class="card-subtitle">Ventes ($/heure)</div>
-                    <div class="card-text">Rang : 1er semaine / 3e année</div>
-                </div>
-            </div>
-            <div class="card shadow w1 h3 bg-success">
-                <div class="card-inside">
-                    <div class="mvp"><i class="fa fa-trophy"></i>&nbsp; Champion de cette catégorie !</div>
-                    <div class="chart-bg">
-                        <div class="bg-progress" style="width: 100%"></div>
-                    </div>
-                    <div class="card-chart">
-                        <div class="card-score">5.89</div>
-                        <div class="card-unit">unités</div>
-                        <div class="card-score-subtext">Meilleur score: 5.89</div>
-                    </div>
-                    <div class="card-title">Plans de protection</div>
-                    <div class="card-subtitle">Efficacité (qté/heure)</div>
-                    <div class="card-text">Rang : 1er semaine / 3e année</div>
-                </div>
-            </div>
-            <div class="card shadow w2 h3 bg-warning">
-                <div class="card-inside">
-                    <div class="mvp"><i class="fa fa-trophy"></i>&nbsp; Champion de cette catégorie !</div>
-                    <div class="chart-bg">
-                        <div class="bg-progress" style="width: 100%"></div>
-                    </div>
-                    <div class="card-chart">
-                        <div class="card-score">5.89</div>
-                        <div class="card-unit">unités</div>
-                        <div class="card-score-subtext">Meilleur score: 5.89</div>
-                    </div>
-                    <div class="card-title">Techno-Centre</div>
-                    <div class="card-subtitle">Ventes ($/heure)</div>
-                    <div class="card-text">Rang : 1er semaine / 3e année</div>
-                </div>
-            </div>
-            <div class="card shadow w3 h3 bg-danger">
-                <div class="card-inside">
-                    <div class="mvp"><i class="fa fa-trophy"></i>&nbsp; Champion de cette catégorie !</div>
-                    <div class="chart-bg">
-                        <div class="bg-progress" style="width: 100%"></div>
-                    </div>
-                    <div class="card-chart">
-                        <div class="card-score">5.89</div>
-                        <div class="card-unit">unités</div>
-                        <div class="card-score-subtext">Meilleur score: 5.89</div>
-                    </div>
-                    <div class="card-title">Mac Mix</div>
-                    <div class="card-subtitle">Efficacité</div>
-                    <div class="card-text">Rang : 1er semaine / 3e année</div>
-                </div>
-            </div>
+            {{/each}}
             <img src="/img/beglogo.png" class="footer-img">
             <div class="footer-text">Rapport de performance de l'associé</div>
-            <div class="footer-dates">du 15 sept. 2016<br>au 25 sept. 2016</div>
+            <div class="footer-dates">du {{datefrom}}<br>au {{dateto}}</div>
         </div>
         {{/each}}
     </body>

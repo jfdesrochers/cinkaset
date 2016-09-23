@@ -28,61 +28,273 @@ function loadingDone(title, message, reload) {
     }, 2000);
 }
 
+var ResultFunction = function(fct) {
+    var data = 0;
+    return function(item, hours) {
+        if (arguments.length > 0) {
+            data = fct(item, hours);
+            return data;
+        } else {
+            return data;
+        }
+    };
+};
+
+var DataRenderer = function() {
+    var items = [];
+    var self = {};
+
+    self.addItem = function(item) {
+        items.push(item);
+    };
+
+    self.canRender = function(reportlist) {
+        var allpresent = true;
+        var allcats = items.map(function(item) {
+            return [item.title + ' - ' + item.subtitle,
+                item.reqclasses.some(function(cls) {
+                    if (reportlist.indexOf(cls) >= 0) {
+                        return true;
+                    } else {
+                        allpresent = false;
+                        return false;
+                    }
+                })
+            ];
+        });
+        return {'canrender': allpresent, 'cats': allcats}
+    };
+
+    self.renderToContext = function(data) {
+        var tops = items.map(function(item) {
+            var curTop = {'name': 'Aucun Associé', 'id': '0000000', 'result': 0};
+            data.forEach(function(assoc) {
+                if (assoc.hours === 0) {return}
+                var res = item.result(assoc.results, assoc.hours);
+                if (res > curTop.result) {
+                    curTop = {'name': assoc.name, 'id': assoc.id, 'result': res};
+                }
+            });
+            return curTop;
+        });
+
+        
+    };
+
+    return self;
+};
+
+// Add data and objectives
+
+var dr = DataRenderer();
+
+dr.addItem({
+    'title': 'Class Attach',
+    'subtitle': 'Ordinateurs Mac',
+    'position': [1, 1],
+    'reqclasses': ['c0'],
+    'result': new ResultFunction(function (item) {
+        return item['c0']['data'];
+    }),
+    'unitdecimals': 2,
+    'unit': 'unités',
+    'objective': 4.00
+});
+
+dr.addItem({
+    'title': 'Class Attach',
+    'subtitle': 'Ordinateurs',
+    'position': [2, 1],
+    'reqclasses': ['c1'],
+    'result': new ResultFunction(function (item) {
+        return item['c1']['data'];
+    }),
+    'unitdecimals': 2,
+    'unit': 'unités',
+    'objective': 4.00
+});
+
+dr.addItem({
+    'title': 'Class Attach',
+    'subtitle': 'Imprimantes',
+    'position': [3, 1],
+    'reqclasses': ['c2'],
+    'result': new ResultFunction(function (item) {
+        return item['c2']['data'];
+    }),
+    'unitdecimals': 2,
+    'unit': 'unités',
+    'objective': 3.00
+});
+
+dr.addItem({
+    'title': 'Class Attach',
+    'subtitle': 'Tablettes',
+    'position': [1, 2],
+    'reqclasses': ['c3'],
+    'result': new ResultFunction(function (item) {
+        return item['c3']['data'];
+    }),
+    'unitdecimals': 2,
+    'unit': 'unités',
+    'objective': 3.50
+});
+
+dr.addItem({
+    'title': 'Class Attach',
+    'subtitle': 'Smartphones',
+    'position': [2, 2],
+    'reqclasses': ['c4'],
+    'result': new ResultFunction(function (item) {
+        return item['c4']['data'];
+    }),
+    'unitdecimals': 2,
+    'unit': 'unités',
+    'objective': 5.00
+});
+
+dr.addItem({
+    'title': 'Plans de protection',
+    'subtitle': 'Ventes ($/heure)',
+    'position': [3, 2],
+    'reqclasses': ['888aa'],
+    'result': new ResultFunction(function (item, hours) {
+        return item['888aa']['sales'] / hours;
+    }),
+    'unitdecimals': 2,
+    'unit': '$ / heure',
+    'objective': 15.00
+});
+
+dr.addItem({
+    'title': 'Plans de protection',
+    'subtitle': 'Efficacité (qté/heure)',
+    'position': [1, 3],
+    'reqclasses': ['888aa'],
+    'result': new ResultFunction(function (item, hours) {
+        return item['888aa']['units'] / hours * 100;
+    }),
+    'unitdecimals': 0,
+    'unit': '% d\'efficacité',
+    'objective': 25
+});
+
+dr.addItem({
+    'title': 'Techno-Centre',
+    'subtitle': 'Ventes ($/heure)',
+    'position': [2, 3],
+    'reqclasses': ['887aa'],
+    'result': new ResultFunction(function (item, hours) {
+        return item['887aa']['sales'] / hours;
+    }),
+    'unitdecimals': 2,
+    'unit': '$ / heure',
+    'objective': 10.00
+});
+
+dr.addItem({
+    'title': 'Mix Macintosh',
+    'subtitle': 'Efficacité (%)',
+    'position': [3, 3],
+    'reqclasses': ['330304a', '331345a', '330304a', '331345a', '331314a', '330346a', '331355a', '331315a', '330302a',
+        '330351a', '331316a', '330303a', '331352a'],
+    'result': new ResultFunction(function (item) {
+        return (item['330304a']['units']+item['331345a']['units'])/(item['330304a']['units']+item['331345a']['units']+
+            item['331314a']['units']+item['330346a']['units']+item['331355a']['units']+item['331315a']['units']+
+            item['330302a']['units']+item['330351a']['units']+item['331316a']['units']+item['330303a']['units']+
+            item['331352a']['units'])*100;
+    }),
+    'unitdecimals': 2,
+    'unit': '% d\'efficacité',
+    'objective': 15.00
+});
+
+
 var Reportdata = function () {
     // Private
     var self = {};
 
     // Public
     self.error = m.prop("");
-    self.report = {};
+    self.reportlist = m.prop([]);
+    self.reportdata = m.prop([]);
+    self.reportcheck = m.prop({});
     self.loadReport = function(files) {
-        var f = files[0];
-        var reader = new FileReader();
-        reader.onload = function(e) {
-            var j = JSON.parse(reader.result);
-            var assocs = [];
-            var reports = [];
-            j.reportlist.forEach(function(rpt) {
-                reports.push(rpt.slice(0, -12));
-            });
-            if (hasId(j['class'], 'Succ', 'level')) {
-                reports.push.apply(reports, ['c0', 'c1', 'c2', 'c3', 'c4']);
-            }
-            j.reports.forEach(function(rpt) {
-                for (var idx in rpt.assoc) {
-                    if (rpt.assoc.hasOwnProperty(idx)) {
-                        if (!hasId(assocs, idx)) {
-                            assocs.push({'id': idx, 'name': rpt.assoc[idx]['name'].trim(), 'results': []})
+        try {
+            var f = files[0];
+            var reader = new FileReader();
+            self.reportlist([]);
+            self.reportdata([]);
+            self.reportcheck({});
+            self.error("");
+            reader.onload = function (e) {
+                m.startComputation();
+                try {
+                    var j = JSON.parse(reader.result);
+                    var assocs = [];
+                    var reports = [];
+                    j.reportlist.forEach(function (rpt) {
+                        reports.push(rpt.slice(0, -12));
+                    });
+                    if (hasId(j['class'], 'Succ', 'level')) {
+                        reports.push.apply(reports, ['c0', 'c1', 'c2', 'c3', 'c4']);
+                    }
+                    j.reports.forEach(function (rpt) {
+                        for (var idx in rpt.assoc) {
+                            if (rpt.assoc.hasOwnProperty(idx)) {
+                                if (!hasId(assocs, idx)) {
+                                    assocs.push({
+                                        'id': idx,
+                                        'name': rpt.assoc[idx]['name'].trim(),
+                                        'hours': 0,
+                                        'results': {}
+                                    })
+                                }
+                            }
                         }
-                    }
-                }
-            });
-            assocs.forEach(function(assoc) {
-                j.reports.forEach(function(rpt){
-                    if (rpt.assoc.hasOwnProperty(assoc.id)) {
-                        assoc.results.push({'id': rpt.header, 'units': rpt.assoc[assoc.id]['units'],
-                            'sales': rpt.assoc[assoc.id]['sales'], 'vmt': rpt.assoc[assoc.id]['vmt'],
-                            'trans': rpt.assoc[assoc.id]['trans']});
-                    } else {
-                        assoc.results.push({'id': rpt.header, 'units': 0, 'sales': 0, 'vmt': 0, 'trans': 0});
-                    }
-                });
-                j['class'].forEach(function(cls){
-                    if (cls.level == 'Succ') {
-                        cls.assoc.forEach(function(ass) {
-                            if (ass['assno'] === assoc.id) {
-                                ass['cats'].forEach(function(data, idx) {
-                                    assoc.results.push({'id': 'c' + idx, 'data': data});
-                                });
+                    });
+                    assocs.forEach(function (assoc) {
+                        j.reports.forEach(function (rpt) {
+                            if (rpt.assoc.hasOwnProperty(assoc.id)) {
+                                assoc.results[rpt.header] = {
+                                    'units': rpt.assoc[assoc.id]['units'],
+                                    'sales': rpt.assoc[assoc.id]['sales'], 'vmt': rpt.assoc[assoc.id]['vmt'],
+                                    'trans': rpt.assoc[assoc.id]['trans']
+                                };
+                            } else {
+                                assoc.results[rpt.header] = {'units': 0, 'sales': 0, 'vmt': 0, 'trans': 0};
                             }
                         });
-                    }
-                });
-            });
-            console.log(reports);
-            console.log(assocs);
-        };
-        reader.readAsText(f);
+                        j['class'].forEach(function (cls) {
+                            if (cls.level == 'Succ') {
+                                if (!cls.assoc.some(function (ass) {
+                                    if (ass['assno'] === assoc.id) {
+                                        ass['cats'].forEach(function (data, idx) {
+                                            assoc.results['c' + idx] = {'data': data};
+                                        });
+                                        return true;
+                                    }
+                                })) {
+                                    for (var idx=0; idx < 5; idx++) {
+                                        assoc.results['c' + idx] = {'data': 0};
+                                    }
+                                }
+                            }
+                        });
+                    });
+                    self.reportlist(reports);
+                    self.reportdata(assocs);
+                    self.reportcheck(dr.canRender(reports));
+                } catch(err) {
+                    self.error('Une erreur est survenue. Assurez-vous d\'avoir chargé le bon fichier! (' + err.message + ')');
+                } finally {
+                    m.endComputation();
+                }
+            };
+            reader.readAsText(f);
+        } catch(err) {
+            self.error('Une erreur est survenue. Assurez-vous d\'avoir chargé le bon fichier! (' + err.message + ')');
+        }
     };
 
     return self;
@@ -96,6 +308,19 @@ var Reportapp = {
         // Public
         self.data = data;
 
+        self.getsetHours = function(item) {
+            return function(hours) {
+                if (arguments.length > 0) {
+                    item.hours = parseInt(hours);
+                }
+                return item.hours.toString();
+            }
+        };
+
+        self.generateReport = function() {
+            var ctx = dr.renderToContext(data.reportdata());
+        };
+
         return self;
     },
 
@@ -105,13 +330,52 @@ var Reportapp = {
                 m("div.panel.panel-default", [
                     m("div.panel-heading.app-title", "Cinkaset"),
                     m("div.panel-body.text-center", [
+                        ctrl.data.error().length ? m("div.alert.alert-danger", ctrl.data.error()) : "",
                         m("span", {className: "btn btn-primary btn-lg btn-file"}, [
                             m("span#browsecaption", "Charger un daily.report..."),
                             m("input", {type: "file", onchange: m.withAttr("files", ctrl.data.loadReport)})
                         ])
                     ])
                 ])
-            )
+            ),
+            ctrl.data.reportdata().length ? m("div.row",
+                m(ctrl.data.reportcheck().canrender ? "div.panel.panel-success" : "div.panel.panel-danger", [
+                    m("div.panel-heading", ctrl.data.reportcheck().canrender ? "Vous avez toutes les données nécessaires pour générer les rapports!" : "Il manque des données pour continuer, SVP voir ci-dessous :"),
+                    m("div.panel-body", [
+                        m("ul.checklist", [ctrl.data.reportcheck().cats.map(function(item) {
+                            return m(item[1] ? "li.text-success" : "li.text-danger", item[0]);
+                        })])
+                    ])
+                ])
+            ) : "",
+            (ctrl.data.reportdata().length && ctrl.data.reportcheck().canrender) ? m("div.row",
+                m("div.panel.panel-primary", [
+                    m("div.panel-heading", "Veuillez entrer les heures des associés ci-dessous :"),
+                    m("div.panel-body", [
+                        m("ul.list-group",  [
+                            m("div.lead", "Note: Aucun rapport ne sera généré pour les associés avec 0 heures."),
+                            ctrl.data.reportdata().map(function(item) {
+                                return m("li.list-group-item.hoursitem", m("div.row", [
+                                    m("div.col-sm-3", m("em", item.id)),
+                                    m("div.col-sm-4", m("strong", item.name)),
+                                    m("div.col-sm-5", [
+                                        m("input.form-control.pull-right", {onchange: m.withAttr("value", ctrl.getsetHours(item)), value: ctrl.getsetHours(item)()}),
+                                        m("div.pull-right.hlabel", "Heures : ")
+                                    ])
+                                ]))
+                            })
+                        ])
+                    ])
+                ])
+            ) : "",
+            (ctrl.data.reportdata().length && ctrl.data.reportcheck().canrender) ? m("div.row",
+                m("div.panel.panel-default", [
+                    m("div.panel-heading", "Une fois prêt, cliquez sur le bouton ci-dessous pour générer le rapport :"),
+                    m("div.panel-body.text-center", [
+                        m("button.btn.btn-primary.btn-lg", {onclick: ctrl.generateReport}, "Générer le rapport...")
+                    ])
+                ])
+            ) : ""
         ]);
     }
 };
