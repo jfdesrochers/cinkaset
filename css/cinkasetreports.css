@@ -173,3 +173,13 @@
     font-size: 12pt;
     color: #646464;
 }
+
+@media print {
+    .printbutton {
+        display: none;
+    }
+
+    .reportpage {
+        page-break-after: always;
+    }
+}

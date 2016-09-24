@@ -38,12 +38,12 @@ templates['report'] = template({"1":function(container,depth0,helpers,partials,d
     + "</div>\n                    <div class=\"card-subtitle\">"
     + alias4(((helper = (helper = helpers.subtitle || (depth0 != null ? depth0.subtitle : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"subtitle","hash":{},"data":data}) : helper)))
     + "</div>\n                    <div class=\"card-text\">"
-    + alias4(((helper = (helper = helpers.text || (depth0 != null ? depth0.text : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"text","hash":{},"data":data}) : helper)))
+    + alias4(((helper = (helper = helpers.cardtext || (depth0 != null ? depth0.cardtext : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"cardtext","hash":{},"data":data}) : helper)))
     + "</div>\n                </div>\n            </div>\n";
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1;
 
-  return "<!DOCTYPE html>\n<html class=\"\">\n    <head>\n        <meta charset=\"utf-8\">\n        <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n        <title>Cinkaset par Jean-François Desrochers</title>\n        <link href=\"/css/vendor/fonts.css\" rel=\"stylesheet\" type=\"text/css\">\n        <link href=\"/css/cinkasetreports.css\" rel=\"stylesheet\">\n        <style type=\"text/css\">\n\n        </style>\n    </head>\n    <body>\n"
+  return "<!DOCTYPE html>\n<html class=\"\">\n    <head>\n        <meta charset=\"utf-8\">\n        <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n        <title>Cinkaset par Jean-François Desrochers</title>\n        <link href=\"/css/vendor/fonts.css\" rel=\"stylesheet\" type=\"text/css\">\n        <link href=\"/css/cinkasetreports.css\" rel=\"stylesheet\">\n        <style type=\"text/css\">\n\n        </style>\n    </head>\n    <body>\n        <input type=\"button\" class=\"printbutton\" onclick=\"window.print()\" value=\"Imprimer...\">\n        <input type=\"button\" class=\"printbutton\" onclick=\"window.close()\" value=\"Fermer la fenêtre\">\n"
     + ((stack1 = helpers.each.call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.page : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "    </body>\n</html>";
 },"useData":true});

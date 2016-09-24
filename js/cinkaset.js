@@ -5,6 +5,12 @@ function hasId(array, id, key) {
     });
 }
 
+function parseDate(sdate) {
+    var months = ['jan.', 'fév.', 'mars', 'avr.', 'mai', 'juin', 'jui.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'];
+    var pdate = /(\d{2})\/(\d{2})\/(\d{2})/g.exec(sdate);
+    return parseInt(pdate[2]) + ' ' + months[parseInt(pdate[1]) - 1] + ' 20' + pdate[3];
+}
+
 function showLoading(show, title, message) {
     if (show) {
         document.getElementById("loadtitle").textContent = title;
@@ -69,7 +75,7 @@ var DataRenderer = function() {
         var tops = items.map(function(item) {
             var curTop = {'name': 'Aucun Associé', 'id': '0000000', 'result': 0};
             data.forEach(function(assoc) {
-                if (assoc.hours === 0) {return}
+                if (assoc.hours <= 0) {return}
                 var res = item.result(assoc.results, assoc.hours);
                 if (res > curTop.result) {
                     curTop = {'name': assoc.name, 'id': assoc.id, 'result': res};
@@ -78,7 +84,41 @@ var DataRenderer = function() {
             return curTop;
         });
 
-
+        var ctx = {page: []};
+        data.forEach(function(assoc) {
+            if (assoc.hours <= 0) {return}
+            var page = {};
+            page.assocname = assoc.name;
+            page.assocno = assoc.id;
+            page.datefrom = assoc.datefrom;
+            page.dateto = assoc.dateto;
+            page.block = items.map(function(item, idx) {
+                var block = {};
+                var result = item.result(assoc.results, assoc.hours);
+                block.posw = item.position[0];
+                block.posh = item.position[1];
+                block.bgstatus = result >= item.objective ? "success" : (result + result * 0.1) >= item.objective ? "warning" : "danger";
+                block.mvpstatus = assoc.id === tops[idx].id ? "mvp" : "nomvp";
+                if (result < item.objective) {
+                    block.progress = Math.floor(result / item.objective * 100);
+                    block.objective = "Objectif: " + item.objective.toFixed(item.unitdecimals);
+                } else if (result < tops[idx].result) {
+                    block.progress = Math.floor(result / tops[idx].result * 100);
+                    block.objective = "Meilleur Score: " + tops[idx].result.toFixed(item.unitdecimals);
+                } else {
+                    block.progress = 100;
+                    block.objective = "Meilleur Score: " + tops[idx].result.toFixed(item.unitdecimals);
+                }
+                block.result = result.toFixed(item.unitdecimals);
+                block.unit = item.unit;
+                block.title = item.title;
+                block.subtitle = item.subtitle;
+                block.cardtext = item.cardtext(assoc.results, assoc.hours);
+                return block;
+            });
+            ctx.page.push(page);
+        });
+        return ctx;
     };
 
     return self;
@@ -96,6 +136,9 @@ dr.addItem({
     'result': new ResultFunction(function (item) {
         return item['c0']['data'];
     }),
+    'cardtext': new ResultFunction(function (item) {
+        return 'Vous êtes ' + item['c0']['rank'] + (item['c0']['rank'] === 1 ? 'er dans l\'équipe' : 'e dans l\'équipe');
+    }),
     'unitdecimals': 2,
     'unit': 'unités',
     'objective': 4.00
@@ -108,6 +151,9 @@ dr.addItem({
     'reqclasses': ['c1'],
     'result': new ResultFunction(function (item) {
         return item['c1']['data'];
+    }),
+    'cardtext': new ResultFunction(function (item) {
+        return 'Vous êtes ' + item['c1']['rank'] + (item['c1']['rank'] === 1 ? 'er dans l\'équipe' : 'e dans l\'équipe');
     }),
     'unitdecimals': 2,
     'unit': 'unités',
@@ -122,6 +168,9 @@ dr.addItem({
     'result': new ResultFunction(function (item) {
         return item['c2']['data'];
     }),
+    'cardtext': new ResultFunction(function (item) {
+        return 'Vous êtes ' + item['c2']['rank'] + (item['c2']['rank'] === 1 ? 'er dans l\'équipe' : 'e dans l\'équipe');
+    }),
     'unitdecimals': 2,
     'unit': 'unités',
     'objective': 3.00
@@ -134,6 +183,9 @@ dr.addItem({
     'reqclasses': ['c3'],
     'result': new ResultFunction(function (item) {
         return item['c3']['data'];
+    }),
+    'cardtext': new ResultFunction(function (item) {
+        return 'Vous êtes ' + item['c3']['rank'] + (item['c3']['rank'] === 1 ? 'er dans l\'équipe' : 'e dans l\'équipe');
     }),
     'unitdecimals': 2,
     'unit': 'unités',
@@ -148,6 +200,9 @@ dr.addItem({
     'result': new ResultFunction(function (item) {
         return item['c4']['data'];
     }),
+    'cardtext': new ResultFunction(function (item) {
+        return 'Vous êtes ' + item['c4']['rank'] + (item['c4']['rank'] === 1 ? 'er dans l\'équipe' : 'e dans l\'équipe');
+    }),
     'unitdecimals': 2,
     'unit': 'unités',
     'objective': 5.00
@@ -160,6 +215,9 @@ dr.addItem({
     'reqclasses': ['888aa'],
     'result': new ResultFunction(function (item, hours) {
         return item['888aa']['sales'] / hours;
+    }),
+    'cardtext': new ResultFunction(function (item) {
+        return 'Total vendu: ' + item['888aa']['sales'].toFixed(2) + ' $';
     }),
     'unitdecimals': 2,
     'unit': '$ / heure',
@@ -174,6 +232,9 @@ dr.addItem({
     'result': new ResultFunction(function (item, hours) {
         return item['888aa']['units'] / hours * 100;
     }),
+    'cardtext': new ResultFunction(function (item) {
+        return 'Qté de plans vendus: ' + item['888aa']['units'].toFixed(0)
+    }),
     'unitdecimals': 0,
     'unit': '% d\'efficacité',
     'objective': 25
@@ -187,6 +248,9 @@ dr.addItem({
     'result': new ResultFunction(function (item, hours) {
         return item['887aa']['sales'] / hours;
     }),
+    'cardtext': new ResultFunction(function (item) {
+        return 'Total vendu: ' + item['887aa']['sales'].toFixed(2) + ' $';
+    }),
     'unitdecimals': 2,
     'unit': '$ / heure',
     'objective': 10.00
@@ -199,10 +263,16 @@ dr.addItem({
     'reqclasses': ['330304a', '331345a', '330304a', '331345a', '331314a', '330346a', '331355a', '331315a', '330302a',
         '330351a', '331316a', '330303a', '331352a'],
     'result': new ResultFunction(function (item) {
-        return (item['330304a']['units']+item['331345a']['units'])/(item['330304a']['units']+item['331345a']['units']+
+        return ((item['330304a']['units']+item['331345a']['units'])/(item['330304a']['units']+item['331345a']['units']+
             item['331314a']['units']+item['330346a']['units']+item['331355a']['units']+item['331315a']['units']+
             item['330302a']['units']+item['330351a']['units']+item['331316a']['units']+item['330303a']['units']+
-            item['331352a']['units'])*100;
+            item['331352a']['units'])*100) || 0;
+    }),
+    'cardtext': new ResultFunction(function (item) {
+        return 'Macs vendus: ' + (item['330304a']['units']+item['331345a']['units']) + ' / PCs vendus: ' +
+            (item['331314a']['units']+item['330346a']['units']+item['331355a']['units']+item['331315a']['units']+
+            item['330302a']['units']+item['330351a']['units']+item['331316a']['units']+item['330303a']['units']+
+            item['331352a']['units']);
     }),
     'unitdecimals': 2,
     'unit': '% d\'efficacité',
@@ -246,6 +316,8 @@ var Reportdata = function () {
                                     assocs.push({
                                         'id': idx,
                                         'name': rpt.assoc[idx]['name'].trim(),
+                                        'datefrom': parseDate(rpt.datefrom),
+                                        'dateto': parseDate(rpt.dateto),
                                         'hours': 0,
                                         'results': {}
                                     })
@@ -270,13 +342,13 @@ var Reportdata = function () {
                                 if (!cls.assoc.some(function (ass) {
                                     if (ass['assno'] === assoc.id) {
                                         ass['cats'].forEach(function (data, idx) {
-                                            assoc.results['c' + idx] = {'data': data};
+                                            assoc.results['c' + idx] = {'data': data, 'rank': ass['ranks'][0]};
                                         });
                                         return true;
                                     }
                                 })) {
                                     for (var idx=0; idx < 5; idx++) {
-                                        assoc.results['c' + idx] = {'data': 0};
+                                        assoc.results['c' + idx] = {'data': 0, 'rank': 0};
                                     }
                                 }
                             }
@@ -319,6 +391,9 @@ var Reportapp = {
 
         self.generateReport = function() {
             var ctx = dr.renderToContext(data.reportdata());
+            var tmpl = Handlebars.templates.report(ctx);
+            var win = window.open();
+            win.document.write(tmpl);
         };
 
         return self;

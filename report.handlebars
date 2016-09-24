@@ -12,6 +12,8 @@
         </style>
     </head>
     <body>
+        <input type="button" class="printbutton" onclick="window.print()" value="Imprimer...">
+        <input type="button" class="printbutton" onclick="window.close()" value="Fermer la fenêtre">
         {{#each page}}
         <div class="reportpage">
             <div class="reporttitle">{{assocname}}</div>
@@ -30,7 +32,7 @@
                     </div>
                     <div class="card-title">{{title}}</div>
                     <div class="card-subtitle">{{subtitle}}</div>
-                    <div class="card-text">{{text}}</div>
+                    <div class="card-text">{{cardtext}}</div>
                 </div>
             </div>
             {{/each}}
