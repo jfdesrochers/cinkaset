@@ -54,6 +54,15 @@ var DataRenderer = function() {
         items.push(item);
     };
 
+    self.replaceItem = function(posw, posh, newitem) {
+        items.some(function(item, idx) {
+            if (item.position[0] === posw && item.position[1] === posh) {
+                items[idx] = newitem;
+                return true;
+            }
+        });
+    };
+
     self.canRender = function(reportlist) {
         var allpresent = true;
         var allcats = items.map(function(item) {
@@ -224,7 +233,7 @@ dr.addItem({
     'objective': 15.00
 });
 
-dr.addItem({
+var espeff = {
     'title': 'Plans de protection',
     'subtitle': 'Efficacité (qté/heure)',
     'position': [1, 3],
@@ -238,7 +247,24 @@ dr.addItem({
     'unitdecimals': 0,
     'unit': '% d\'efficacité',
     'objective': 25
-});
+};
+dr.addItem(espeff);
+
+var salesh = {
+    'title': 'Ventes à l\'heure',
+    'subtitle': 'Ventes ($/heure)',
+    'position': [1, 3],
+    'reqclasses': ['aaaa'],
+    'result': new ResultFunction(function (item, hours) {
+        return item['aaaa']['sales'] / hours;
+    }),
+    'cardtext': new ResultFunction(function (item) {
+        return 'Total vendu: ' + item['aaaa']['sales'].toFixed(2) + ' $';
+    }),
+    'unitdecimals': 2,
+    'unit': '$ / heure',
+    'objective': 200.00
+};
 
 dr.addItem({
     'title': 'Techno-Centre',
@@ -379,6 +405,13 @@ var Reportapp = {
 
         // Public
         self.data = data;
+        self.usesalesh = function(val) {
+            if (val) {
+                dr.replaceItem(1, 3, salesh);
+            } else {
+                dr.replaceItem(1, 3, espeff);
+            }
+        };
 
         self.getsetHours = function(item) {
             return function(hours) {
@@ -406,6 +439,7 @@ var Reportapp = {
                     m("div.panel-heading.app-title", "Cinkaset par J-F Desrochers"),
                     m("div.panel-body.text-center", [
                         ctrl.data.error().length ? m("div.alert.alert-danger", ctrl.data.error()) : "",
+                        m("div.checkbox", m("label", [m("input", {type: "checkbox", onclick: m.withAttr('checked', ctrl.usesalesh)}), " Utiliser les ventes à l'heure au lieu de l'efficacité PSF."])),
                         m("span", {className: "btn btn-primary btn-lg btn-file"}, [
                             m("span#browsecaption", "Charger un daily.report..."),
                             m("input", {type: "file", onchange: m.withAttr("files", ctrl.data.loadReport)})
@@ -434,7 +468,7 @@ var Reportapp = {
                                     m("div.col-sm-3", m("em", item.id)),
                                     m("div.col-sm-4", m("strong", item.name)),
                                     m("div.col-sm-5", [
-                                        m("input.form-control.pull-right", {onchange: m.withAttr("value", ctrl.getsetHours(item)), value: ctrl.getsetHours(item)()}),
+                                        m("input.form-control.pull-right", {type: "tel", onchange: m.withAttr("value", ctrl.getsetHours(item)), value: ctrl.getsetHours(item)()}),
                                         m("div.pull-right.hlabel", "Heures : ")
                                     ])
                                 ]))
