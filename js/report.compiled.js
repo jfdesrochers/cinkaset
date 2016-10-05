@@ -9,7 +9,7 @@ templates['report'] = template({"1":function(container,depth0,helpers,partials,d
     + alias4(((helper = (helper = helpers.assocno || (depth0 != null ? depth0.assocno : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"assocno","hash":{},"data":data}) : helper)))
     + "</div>\n"
     + ((stack1 = helpers.each.call(alias1,(depth0 != null ? depth0.block : depth0),{"name":"each","hash":{},"fn":container.program(2, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
-    + "            <img src=\"/img/beglogo.png\" class=\"footer-img\">\n            <div class=\"footer-text\">Rapport de performance de l'associé</div>\n            <div class=\"footer-dates\">du "
+    + "            <img src=\"img/beglogo.png\" class=\"footer-img\">\n            <div class=\"footer-text\">Rapport de performance de l'associé</div>\n            <div class=\"footer-dates\">du "
     + alias4(((helper = (helper = helpers.datefrom || (depth0 != null ? depth0.datefrom : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"datefrom","hash":{},"data":data}) : helper)))
     + "<br>au "
     + alias4(((helper = (helper = helpers.dateto || (depth0 != null ? depth0.dateto : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"dateto","hash":{},"data":data}) : helper)))
@@ -43,7 +43,7 @@ templates['report'] = template({"1":function(container,depth0,helpers,partials,d
 },"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1;
 
-  return "<!DOCTYPE html>\n<html class=\"\">\n    <head>\n        <meta charset=\"utf-8\">\n        <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n        <title>Cinkaset par Jean-François Desrochers</title>\n        <link href=\"/css/vendor/fonts.css\" rel=\"stylesheet\" type=\"text/css\">\n        <link href=\"/css/cinkasetreports.css\" rel=\"stylesheet\">\n        <style type=\"text/css\">\n\n        </style>\n    </head>\n    <body>\n        <input type=\"button\" class=\"printbutton\" onclick=\"window.print()\" value=\"Imprimer...\">\n        <input type=\"button\" class=\"printbutton\" onclick=\"window.close()\" value=\"Fermer la fenêtre\">\n"
+  return "<!DOCTYPE html>\n<html class=\"\">\n    <head>\n        <meta charset=\"utf-8\">\n        <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n        <title>Cinkaset par Jean-François Desrochers</title>\n        <link href=\"css/vendor/fonts.css\" rel=\"stylesheet\" type=\"text/css\">\n        <link href=\"css/cinkasetreports.css\" rel=\"stylesheet\">\n        <style type=\"text/css\">\n\n        </style>\n    </head>\n    <body>\n        <input type=\"button\" class=\"printbutton\" onclick=\"window.print()\" value=\"Imprimer...\">\n        <input type=\"button\" class=\"printbutton\" onclick=\"window.close()\" value=\"Fermer la fenêtre\">\n"
     + ((stack1 = helpers.each.call(depth0 != null ? depth0 : {},(depth0 != null ? depth0.page : depth0),{"name":"each","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
     + "    </body>\n</html>";
 },"useData":true});
