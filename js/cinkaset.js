@@ -106,7 +106,7 @@ var DataRenderer = function() {
                 var result = item.result(assoc.results, assoc.hours);
                 block.posw = item.position[0];
                 block.posh = item.position[1];
-                block.bgstatus = result >= item.objective ? "success" : (result + result * 0.1) >= item.objective ? "warning" : "danger";
+                block.bgstatus = result >= item.objective ? "success" : (result + result * 0.33) >= item.objective ? "warning" : "danger";
                 block.mvpstatus = assoc.id === tops[idx].id ? "mvp" : "nomvp";
                 if (result < item.objective) {
                     block.progress = Math.floor(result / item.objective * 100);
